@@ -139,8 +139,8 @@ export default function Order() {
 
 
     try {
-      await axios.post(
-  "https://milggin-dairy-14.onrender.com/order",  // singular 'order'
+     axios.post(
+  "https://milggin-dairy-14.onrender.com/orders/order", // note the correct endpoint
   payload,
   {
     headers: {
@@ -148,6 +148,7 @@ export default function Order() {
     },
   }
 );
+
 
       setMsgType("success");
       setMessage("Order placed successfully!");
