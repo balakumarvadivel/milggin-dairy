@@ -32,17 +32,17 @@ app.use("/orders", orderRoutes);
 
 // Serve React frontend in production
 if (process.env.NODE_ENV === "production") {
-  // Serve static files from React build
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  const buildPath = path.join(__dirname, "../frontend/build");
 
-  // Serve React for all routes except API
-  app.get("*", (req, res) => {
-    // Only send index.html for non-API routes
-    if (!req.path.startsWith("/api")) {
-      res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-    }
+  // Serve static files
+  app.use(express.static(buildPath));
+
+  // Serve React for all non-API routes
+  app.get(/^\/(?!api\/).*$/, (req, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
   });
 }
+
 
 
 // Start server
