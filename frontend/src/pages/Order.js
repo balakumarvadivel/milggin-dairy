@@ -131,25 +131,13 @@ export default function Order() {
     }
 
     const payload = {
-  ...customerDetails,
-  items: cart,
-  total: cart.reduce((s, i) => s + i.total, 0),
-  type: "order" // or "preorder" if it’s a preorder
-};
-
+      ...customerDetails,
+      items: cart,
+      total: cart.reduce((s, i) => s + i.total, 0),
+    };
 
     try {
-     axios.post(
-  "https://milggin-dairy-14.onrender.com/orders/order", // note the correct endpoint
-  payload,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-    },
-  }
-);
-
-
+      await axios.post("http://localhost:5000/orders/order", payload);
       setMsgType("success");
       setMessage("Order placed successfully!");
       setCart([]);
