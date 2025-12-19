@@ -1,9 +1,15 @@
-# Node modules (very large)
+# Node
 node_modules/
+npm-debug.log*
+yarn-error.log*
 
-# Environment variables (secrets)
+# Env files
 .env
 
 # Build folders
 dist/
 build/
+
+# OS files
+.DS_Store
+Thumbs.db
