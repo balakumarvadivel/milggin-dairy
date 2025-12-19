@@ -7,7 +7,7 @@ export default function Login() {
   const [form, setForm] = useState({ identifier: "", password: "" });
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-
+   console.log("API URL:", process.env.REACT_APP_API_URL);
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 

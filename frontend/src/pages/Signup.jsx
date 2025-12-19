@@ -8,7 +8,7 @@ export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "", phone: "" });
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-
+   console.log("API URL:", process.env.REACT_APP_API_URL);
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const submit = async (e) => {
