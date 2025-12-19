@@ -30,13 +30,13 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/orders", orderRoutes);
 
-// Serve React frontend (production)
+// Serve React frontend in production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-  // ✅ FIXED: no app.get("*")
-  app.use((req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+  // Send index.html for all non-API routes
+  app.get(/^\/(?!api\/).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   });
 }
 
