@@ -1,0 +1,11 @@
+/* src/index.css */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  color: #111827; /* Tailwind gray-900 */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}

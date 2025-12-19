@@ -1,0 +1,90 @@
+.home-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.hero {
+  text-align: center;
+  padding: 50px 20px;
+  background: #fffae6;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #f57c00;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.products {
+  margin-bottom: 40px;
+}
+
+.product-category {
+  margin-bottom: 30px;
+}
+
+.product-list {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 150px;
+  text-align: center;
+}
+
+.out-of-stock {
+  opacity: 0.5;
+  border-color: red;
+}
+
+.branches ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.branches li {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.farm-videos {
+  margin: 40px 0;
+}
+
+.video-list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.video-card h4 {
+  margin-bottom: 10px;
+}
+
+.preorder {
+  text-align: center;
+  padding: 30px;
+  background: #e6f7ff;
+  border-radius: 10px;
+}

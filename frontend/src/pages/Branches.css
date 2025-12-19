@@ -1,0 +1,36 @@
+.branches-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1, h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.branch-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.branch-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  min-width: 150px;
+  text-align: center;
+}
+
+.workers ul {
+  list-style: none;
+  padding-left: 0;
+  text-align: center;
+}
+
+.workers li {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
