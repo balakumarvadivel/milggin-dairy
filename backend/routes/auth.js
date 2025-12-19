@@ -8,9 +8,9 @@ const router = express.Router();
 // SIGNUP route
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone } = req.body;
 
-    if (!name || !email || !password)
+    if (!name || !email || !password || !phone)
       return res.status(400).json({ error: "All fields required" });
 
     const existingUser = await User.findOne({ email });
@@ -23,8 +23,14 @@ router.post("/signup", async (req, res) => {
     const newUser = new User({
       name,
       email,
+      phone,
       passwordHash,
-      role: email === "admin@tamildairy.com" ? "admin" : email === "shop@tamildairy.com" ? "shop_owner" : "user",
+      role:
+        email === "admin@tamildairy.com"
+          ? "admin"
+          : email === "shop@tamildairy.com"
+          ? "shop_owner"
+          : "user",
     });
 
     await newUser.save();

@@ -16,10 +16,8 @@ export default function Login() {
     setMsg("");
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        form
-      );
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, form);
+
 
       // store token
       localStorage.setItem("token", res.data.token);
