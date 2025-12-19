@@ -15,7 +15,8 @@ export default function Signup() {
     e.preventDefault();
     setMsg("");
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, form);
+      const res = await axios.post("https://milggin-dairy-14.onrender.com/api/auth/signup", form);
+
 
       if (res.data.success) {
         setMsg("Signup successful. Redirecting to login...");

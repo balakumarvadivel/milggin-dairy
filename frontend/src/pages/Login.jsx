@@ -16,7 +16,7 @@ export default function Login() {
     setMsg("");
 
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, form);
+      const res =await axios.post("https://milggin-dairy-14.onrender.com/api/auth/login", form);
 
 
       // store token
