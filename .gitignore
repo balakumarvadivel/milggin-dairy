@@ -1,0 +1,9 @@
+# Node modules (very large)
+node_modules/
+
+# Environment variables (secrets)
+.env
+
+# Build folders
+dist/
+build/
