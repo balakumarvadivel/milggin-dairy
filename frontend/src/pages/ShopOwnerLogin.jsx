@@ -16,7 +16,7 @@ export default function ShopOwnerLogin() {
 
     try {
       const res = await axios.post(
-        "http://10.208.109.82:5000/api/auth/shop-login",
+        "http://localhost:5000/api/auth/shop-login",
         form
       );
 

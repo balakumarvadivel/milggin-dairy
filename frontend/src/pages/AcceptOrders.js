@@ -30,7 +30,7 @@ export default function AcceptOrders() {
 
     try {
       const res = await axios.post(
-        "http://10.208.109.82:5000/api/auth/login",
+        "http://localhost:5000/api/auth/login",
         loginForm
       );
 
@@ -62,7 +62,7 @@ export default function AcceptOrders() {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("http://10.208.109.82:5000/api/orders");
+      const response = await axios.get("http://localhost:5000/api/orders");
       setOrders(response.data.orders);
     } catch (err) {
       setMsgType("error");
@@ -72,7 +72,7 @@ export default function AcceptOrders() {
 
   const updateStatus = async (id, status) => {
     try {
-      await axios.put(`http://10.208.109.82:5000/api/orders/${id}/status`, { status });
+      await axios.put(`http://localhost:5000/api/orders/${id}/status`, { status });
       setMsgType("success");
       setMessage(`Order ${status}`);
       fetchOrders(); // Refresh orders
