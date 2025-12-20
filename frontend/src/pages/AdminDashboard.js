@@ -400,15 +400,15 @@ const AdminDashboard = () => {
               <tbody>
                 {filteredPreorders.map((order, idx) => (
                   <tr key={idx} className="hover:bg-gray-100">
-                    <td className="border p-2">{order.name}</td>
-                    <td className="border p-2">
+                    <td className="border p-3">{order.name}</td>
+                    <td className="border p-3">
                       {order.items.map((item) => item.name).join(", ")}
                     </td>
-                    <td className="border p-2">
+                    <td className="border p-3">
                       {order.items.map((item) => item.quantity).join(", ")}
                     </td>
-                    <td className="border p-2">₹{order.total}</td>
-                    <td className="border p-2">
+                    <td className="border p-3">₹{order.total}</td>
+                    <td className="border p-3">
                       {new Date(order.date).toLocaleString()}
                     </td>
                   </tr>
