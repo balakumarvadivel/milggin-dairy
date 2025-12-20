@@ -28,7 +28,8 @@ app.get("/api/health", (req, res) => {
 
 // API routes
 app.use("/api/auth", authRoutes);
-app.use("/orders", orderRoutes);
+app.use("/api/orders", orderRoutes);
+
 
 // Serve React frontend in production
 if (process.env.NODE_ENV === "production") {

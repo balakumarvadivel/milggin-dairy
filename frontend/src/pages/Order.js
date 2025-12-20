@@ -102,14 +102,15 @@ export default function Order() {
     }
 
     setCart(prev => [
-      ...prev,
-      {
-        name: item.name,
-        price: item.price,
-        qty: qtyLabel,
-        total: Math.round(total),
-      }
-    ]);
+  ...prev,
+  {
+    name: item.name,
+    price: item.price,
+    quantity: Number(value), // ✅ NUMBER
+    total: Math.round(total),
+  }
+]);
+
 
     setMsgType("success");
     setMessage(`${item.name} added to cart`);
@@ -130,14 +131,20 @@ export default function Order() {
       return;
     }
 
-    const payload = {
-      ...customerDetails,
-      items: cart,
-      total: cart.reduce((s, i) => s + i.total, 0),
-    };
+  const payload = {
+  ...customerDetails,
+  items: cart.map(item => ({
+    name: item.name,
+    quantity: item.quantity,
+    price: item.price
+  })),
+  total: cart.reduce((s, i) => s + i.total, 0),
+};
+
 
     try {
-      await axios.post("http://localhost:5000/orders/order", payload);
+      await axios.post("/api/orders/order", payload);
+
       setMsgType("success");
       setMessage("Order placed successfully!");
       setCart([]);

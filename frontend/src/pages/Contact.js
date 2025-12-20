@@ -58,7 +58,7 @@ function Contact() {
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/orders/preorder", orderData);
+      const res = await axios.post("/api/orders/preorder", orderData);
 
       if (res.data.success) {
         setMessage(res.data.message);
