@@ -7,7 +7,7 @@ export default function Login() {
   const [form, setForm] = useState({ identifier: "", password: "" });
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-   console.log("API URL:", process.env.REACT_APP_API_URL);
+
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -16,27 +16,33 @@ export default function Login() {
     setMsg("");
 
     try {
-      const res =await axios.post("https://milggin-dairy-14.onrender.com/api/auth/login", form);
+      // Decide whether identifier is email or phone
+      const payload = { password: form.password };
+      if (form.identifier.includes("@")) {
+        payload.email = form.identifier; // treat as email
+      } else {
+        payload.phone = form.identifier; // treat as phone
+      }
 
+      const res = await axios.post(
+        "https://milggin-dairy-14.onrender.com/api/auth/login",
+        payload
+      );
 
-      // store token
+      // store token and user info
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      // set default axios header
+      // set default axios header for future requests
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${res.data.token}`;
 
       // navigate based on role
       const user = res.data.user;
-      if (user.role === "admin") {
-        navigate("/admin");
-      } else if (user.role === "shop_owner") {
-        navigate("/accept-orders");
-      } else {
-        navigate("/");
-      }
+      if (user.role === "admin") navigate("/admin");
+      else if (user.role === "shop_owner") navigate("/accept-orders");
+      else navigate("/");
     } catch (err) {
       setMsg(err.response?.data?.error || "Login failed");
     }
