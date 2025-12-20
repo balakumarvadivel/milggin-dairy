@@ -154,7 +154,7 @@ const AdminDashboard = () => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/orders", {
+        const res = await axios.get("http://10.208.109.82:5000/api/orders", {
 
           headers: { Authorization: `Bearer ${token}` },
         });
