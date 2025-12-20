@@ -13,12 +13,15 @@ function Admin() {
   const fetchOrders = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/orders", {
+      const res = await axios.get("http://localhost:5000/api/orders", {
+
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setOrders(res.data.orders || []);
-      setPreorders(res.data.preorders || []);
+      const allOrders = res.data.orders || [];
+setOrders(allOrders.filter(o => o.type === "order"));
+setPreorders(allOrders.filter(o => o.type === "preorder"));
+
       setLoading(false);
     } catch (err) {
       console.error(err);

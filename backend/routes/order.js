@@ -5,7 +5,7 @@ const Order = require("../models/Order");
 const { authMiddleware, shopOwnerOnly } = require("../middleware/auth");
 
 // GET ALL ORDERS
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authMiddleware, shopOwnerOnly, async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
     res.json({ orders });

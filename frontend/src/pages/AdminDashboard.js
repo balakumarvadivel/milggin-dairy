@@ -154,7 +154,8 @@ const AdminDashboard = () => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("/orders", {
+        const res = await axios.get("http://localhost:5000/api/orders", {
+
           headers: { Authorization: `Bearer ${token}` },
         });
         const allOrders = res.data.orders || [];
