@@ -45,14 +45,16 @@ router.post("/signup", async (req, res) => {
 // LOGIN route
 router.post("/login", async (req, res) => {
   try {
-    const { identifier, password } = req.body;
+    const { email, phone, password } = req.body;
 
-    const user = await User.findOne({
-      $or: [
-        { email: new RegExp('^' + identifier + '$', 'i') },
-        { phone: identifier }
-      ]
-    });
+    if (!password || (!email && !phone))
+      return res.status(400).json({ error: "Email/phone and password required" });
+
+    const user = await User.findOne(
+      email
+        ? { email: new RegExp('^' + email + '$', 'i') }
+        : { phone }
+    );
     if (!user) return res.status(400).json({ error: "Invalid email or phone" });
 
     const validPassword = await bcrypt.compare(password, user.passwordHash);
@@ -71,6 +73,7 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: "Login failed" });
   }
 });
+
 
 // SHOP OWNER LOGIN route
 router.post("/shop-login", async (req, res) => {

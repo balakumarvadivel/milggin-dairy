@@ -7,8 +7,10 @@ const path = require("path");
 // Import routes
 const authRoutes = require("./routes/auth");
 const orderRoutes = require("./routes/order");
+const adminRoutes = require("./routes/admin"); // ✅ Import admin routes
 
-const app = express();
+const app = express(); // ✅ app must be defined before using
+
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
@@ -29,22 +31,17 @@ app.get("/api/health", (req, res) => {
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
-
+app.use("/api/admin", adminRoutes); // ✅ Use admin routes after app is defined
 
 // Serve React frontend in production
 if (process.env.NODE_ENV === "production") {
   const buildPath = path.join(__dirname, "../frontend/build");
-
-  // Serve static files
   app.use(express.static(buildPath));
 
-  // Serve React for all non-API routes
   app.get(/^\/(?!api\/).*$/, (req, res) => {
     res.sendFile(path.join(buildPath, "index.html"));
   });
 }
-
-
 
 // Start server
 app.listen(PORT, () => {
