@@ -7,10 +7,9 @@ const path = require("path");
 // Import routes
 const authRoutes = require("./routes/auth");
 const orderRoutes = require("./routes/order");
-const adminRoutes = require("./routes/admin"); // ✅ Import admin routes
+const adminRoutes = require("./routes/admin"); // if you have admin routes
 
-const app = express(); // ✅ app must be defined before using
-
+const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
@@ -23,7 +22,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Health check
+// Health check route
 app.get("/api/health", (req, res) => {
   res.send("Backend is running!");
 });
@@ -31,7 +30,7 @@ app.get("/api/health", (req, res) => {
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/admin", adminRoutes); // ✅ Use admin routes after app is defined
+app.use("/api/admin", adminRoutes);
 
 // Serve React frontend in production
 if (process.env.NODE_ENV === "production") {

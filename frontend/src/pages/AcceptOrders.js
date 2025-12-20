@@ -29,11 +29,10 @@ export default function AcceptOrders() {
     setMessage("");
 
     try {
-     const res = await axios.post(
-  "http://localhost:5000/api/auth/shop-login",
-  loginForm
-);
-
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        loginForm
+      );
 
       // store token
       localStorage.setItem("token", res.data.token);
@@ -62,25 +61,18 @@ export default function AcceptOrders() {
   };
 
   const fetchOrders = async () => {
-  try {
-    const response = await axios.get(
-      "http://localhost:5000/api/orders"
-    );
-    setOrders(response.data.orders);
-  } catch (err) {
-    setMsgType("error");
-    setMessage("Failed to fetch orders");
-  }
-};
-
+    try {
+      const response = await axios.get("http://localhost:5000/api/orders");
+      setOrders(response.data.orders);
+    } catch (err) {
+      setMsgType("error");
+      setMessage("Failed to fetch orders");
+    }
+  };
 
   const updateStatus = async (id, status) => {
     try {
-    await axios.put(
-  `http://localhost:5000/api/orders/${id}/status`,
-  { status }
-);
-
+      await axios.put(`http://localhost:5000/api/orders/${id}/status`, { status });
       setMsgType("success");
       setMessage(`Order ${status}`);
       fetchOrders(); // Refresh orders

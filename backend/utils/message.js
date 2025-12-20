@@ -1,11 +1,8 @@
-// utils/message.js
-// Dummy implementation for sending order messages
-// TODO: Implement actual messaging (SMS, email, etc.)
+// backend/utils/message.js
 
-const sendOrderMessage = async (orderData, type) => {
-  console.log(`Sending ${type} message for order:`, orderData);
-  // Simulate async operation
-  return Promise.resolve();
+const sendOrderMessage = async (order, status) => {
+  console.log(`Order ${order._id} updated to status: ${status}`);
+  // You can later integrate WhatsApp, SMS, or email here
 };
 
 module.exports = sendOrderMessage;

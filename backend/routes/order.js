@@ -2,53 +2,59 @@ const express = require("express");
 const router = express.Router();
 const sendOrderMessage = require("../utils/message");
 const Order = require("../models/Order");
-const { authMiddleware, shopOwnerOnly, adminOnly } = require("../middleware/auth");
+const { authMiddleware, shopOwnerOnly } = require("../middleware/auth");
 
-// -------------------------
-// GET ALL ORDERS (ADMIN & SHOP OWNER)
-// -------------------------
+/* ============================
+   GET ALL ORDERS (ADMIN & SHOP OWNER)
+============================ */
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
 
-    // Shop owner sees basic order data
+    // SHOP OWNER VIEW
     if (req.user.role === "shop_owner") {
-      const shopOrders = orders.map(o => ({
-        _id: o._id,
-        name: o.name,
-        phone: o.phone,
-        items: o.items.map(i => ({
-          name: i.name,
-          quantity: i.quantity,
-        })),
-        total: o.totalAmount,
-        type: o.type || "order",
-        date: o.createdAt,
-      }));
+      // SHOP OWNER VIEW
+const shopOrders = orders.map(o => ({
+  _id: o._id,
+  name: o.name,
+  phone: o.phone,
+  items: (o.items || []).map(i => ({
+    name: i.name,
+    quantity: i.quantity,
+    price: i.price || 0,
+  })),
+  total: o.total || 0,        // ✅ FIXED
+  status: o.status || "pending", // ✅ FIXED
+  type: o.type || "order",
+  date: o.createdAt,
+}));
+
+
       return res.json({ orders: shopOrders });
     }
 
-    // Admin sees full order data
+    // ADMIN VIEW
     if (req.user.role === "admin") {
-      const formattedOrders = orders.map(o => ({
+      const adminOrders = orders.map((o) => ({
         _id: o._id,
         name: o.name,
         phone: o.phone,
         email: o.email,
         address: o.address,
-        items: o.items.map(i => ({
+        items: (o.items || []).map((i) => ({
           name: i.name,
           quantity: i.quantity,
           price: i.price,
         })),
-        total: o.totalAmount,
+        total: o.total || 0,   // ✅ FIX
+        status: o.status || "pending",
         type: o.type || "order",
         date: o.createdAt,
       }));
-      return res.json({ orders: formattedOrders });
+
+      return res.json({ orders: adminOrders });
     }
 
-    // Other roles: deny
     return res.status(403).json({ error: "Access denied" });
   } catch (err) {
     console.error("Fetch orders error:", err);
@@ -56,23 +62,28 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// -------------------------
-// UPDATE ORDER STATUS (SHOP OWNER ONLY)
-// -------------------------
+/* ============================
+   UPDATE ORDER STATUS (SHOP OWNER ONLY)
+============================ */
 router.put("/:id/status", authMiddleware, shopOwnerOnly, async (req, res) => {
   try {
-    const { id } = req.params;
     const { status } = req.body;
 
     if (!["accepted", "rejected"].includes(status)) {
       return res.status(400).json({ error: "Invalid status" });
     }
 
-    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
-    if (!order) return res.status(404).json({ error: "Order not found" });
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
 
-    // Send notification
-    await sendOrderMessage(order, status);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    await sendOrderMessage(order, status); // ✅ FIX
 
     res.json({ success: true, order });
   } catch (err) {
@@ -81,44 +92,42 @@ router.put("/:id/status", authMiddleware, shopOwnerOnly, async (req, res) => {
   }
 });
 
-// -------------------------
-// CREATE PREORDER
-// -------------------------
+/* ============================
+   CREATE PREORDER
+============================ */
 router.post("/preorder", async (req, res) => {
   try {
-    const orderData = req.body;
-
     const newOrder = new Order({
-      ...orderData,
+      ...req.body,
       type: "preorder",
+      status: "pending",
     });
 
     await newOrder.save();
-    await sendOrderMessage(orderData, "preorder");
+    await sendOrderMessage(newOrder, "preorder"); // ✅ FIX
 
-    res.json({ success: true, message: "Preorder saved", order: newOrder });
+    res.json({ success: true, order: newOrder });
   } catch (err) {
     console.error("Preorder error:", err);
     res.status(500).json({ error: "Preorder failed" });
   }
 });
 
-// -------------------------
-// CREATE NORMAL ORDER
-// -------------------------
+/* ============================
+   CREATE NORMAL ORDER
+============================ */
 router.post("/order", async (req, res) => {
   try {
-    const orderData = req.body;
-
     const newOrder = new Order({
-      ...orderData,
+      ...req.body,
       type: "order",
+      status: "pending",
     });
 
     await newOrder.save();
-    await sendOrderMessage(orderData, "order");
+    await sendOrderMessage(newOrder, "order"); // ✅ FIX
 
-    res.json({ success: true, message: "Order saved", order: newOrder });
+    res.json({ success: true, order: newOrder });
   } catch (err) {
     console.error("Order error:", err);
     res.status(500).json({ error: "Order failed" });
